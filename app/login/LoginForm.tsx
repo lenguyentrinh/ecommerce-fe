@@ -1,7 +1,9 @@
 "use client";
+
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import TextInput from "@/components/inputs/TextInput";
+
 type FormData = {
   gmail: string;
   password: string;
@@ -39,7 +41,7 @@ export default function LoginForm() {
         error={errors.password?.message}
       />
         <div className="text-right mt-1">
-        <a href="#" className="text-gray-500 hover:text-gray-700">
+        <a href="/forgotPassword" className="text-gray-500 hover:text-gray-700">
           Forgot password?
         </a>
       </div>

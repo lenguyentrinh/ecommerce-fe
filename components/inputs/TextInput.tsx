@@ -9,6 +9,7 @@ type textInputProps<TFormValues extends FieldValues> = {
   register: UseFormRegister<TFormValues>;
   required?: string;
   error?: string;
+  validate?: (value:string) => boolean | string;
 };
 export default function TextInput<TFormValues extends FieldValues>({
   label,
@@ -18,6 +19,7 @@ export default function TextInput<TFormValues extends FieldValues>({
   register,
   required,
   error,
+  validate
 }: textInputProps<TFormValues>) {
   return (
     <div className="mb-3">
@@ -30,7 +32,7 @@ export default function TextInput<TFormValues extends FieldValues>({
         className="w-full rounded-lg p-2 border border-gray-300 shadow-md focus:outline-none"
         type={type}
         placeholder={placehoder}
-        {...register(name, { required })}
+        {...register(name, { required , validate})}
       />
       {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>

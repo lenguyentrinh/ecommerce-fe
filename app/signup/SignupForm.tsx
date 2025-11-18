@@ -15,15 +15,14 @@ export default function SignupForm() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<FormData>();
+
   const [loading, setLoading] = useState(false);
   const [errorsMessage, setErrorsMessage] = useState("");
-
-  const onSubmit = async (data: FormData) => {
-    setLoading(true);
-    setErrorsMessage("");
-  };
+  const passwordValue = watch("password");
+  const onSubmit = async (data: FormData) => {};
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -34,6 +33,7 @@ export default function SignupForm() {
           name="username"
           register={register}
           required="Please enter your username"
+          error={errors.username?.message}
         />
         <TextInput
           placehoder="Birth Date..."
@@ -41,6 +41,7 @@ export default function SignupForm() {
           name="birthDate"
           register={register}
           required="Please choose your birth date"
+          error={errors.birthDate?.message}
         />
       </div>
       <TextInput
@@ -48,6 +49,7 @@ export default function SignupForm() {
         type="tel"
         name="phoneNumber"
         register={register}
+        error={errors.phoneNumber?.message}
         required="Please enter your phone number"
       />
       <TextInput
@@ -56,6 +58,7 @@ export default function SignupForm() {
         name="gmail"
         register={register}
         required="Please enter your gmail"
+        error={errors.phoneNumber?.message}
       />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <TextInput
@@ -64,6 +67,16 @@ export default function SignupForm() {
           name="password"
           register={register}
           required="Please enter your password"
+          error={errors.password?.message}
+          validate={(value) => {
+            if (value.length < 6) {
+              return "Password must be at least 6 charater";
+            }
+            if (!/[A-Z]/.test(value)) {
+              return "Password must contain at least 1 uppercase letter";
+            }
+            return true;
+          }}
         />
         <TextInput
           placehoder="Confirm Password..."
@@ -71,6 +84,8 @@ export default function SignupForm() {
           name="confirmPassword"
           register={register}
           required="Please confirm your password"
+          error={errors.confirmPassword?.message}
+          validate={(value) => value === passwordValue || "Passwords not match"}
         />
       </div>
       <button className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">
