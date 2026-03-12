@@ -1,15 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { signupThunk, loginThunk } from "./authThunk";
+import { signupThunk, loginThunk, verifyEmailThunk } from "./authThunk";
 
 interface User{
   id?: number;
-  userName?: String;
-  email?: String;
+  userName?: string;
+  email?: string;
 }
 
 interface AuthState {
   signupLoading: boolean;
   loginLoading: boolean;
+  verifyEmailLoading: boolean;
   user: User | null;
   isAuthenticated: boolean;
   token: string | null;
@@ -20,6 +21,7 @@ const initialState: AuthState = {
   loginLoading: false,
   user: null,
   isAuthenticated: false,
+  verifyEmailLoading: false,
   token: null,
 };
 
@@ -72,6 +74,17 @@ const authSlice = createSlice({
       })
       .addCase(loginThunk.rejected, (state) => {
         state.loginLoading = false;
+      });
+
+      // VERIFY EMAIL
+      builder.addCase(verifyEmailThunk.pending, (state) => {
+        state.verifyEmailLoading = true;
+      })
+      .addCase(verifyEmailThunk.fulfilled, (state) => {
+        state.verifyEmailLoading = false;
+      })
+      .addCase(verifyEmailThunk.rejected, (state) => {
+        state.verifyEmailLoading = false;
       });
   },
 });

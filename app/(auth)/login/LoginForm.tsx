@@ -26,8 +26,8 @@ export default function LoginForm() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      await dispatch(loginThunk(data)).unwrap();
-      showToast.success("Login successful");
+      const result = await dispatch(loginThunk(data)).unwrap();
+      showToast.success(result?.message || "Login successful");
       router.push("/");
     } catch (err) {
       // err is the value from rejectWithValue in the thunk (already a string message)
@@ -38,7 +38,7 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TextInput
-        placehoder="Email..."
+        placeholder="Email..."
         type="email"
         name="email"
         register={register}
@@ -53,7 +53,7 @@ export default function LoginForm() {
         }}
       />
       <TextInput
-        placehoder="Password..."
+        placeholder="Password..."
         type="password"
         name="password"
         register={register}

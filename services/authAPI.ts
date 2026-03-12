@@ -23,12 +23,12 @@ const loginAPI = async(data:LoginPayload)=>{
   return res.data;
 }
 
-interface VerifyEmailPayload {
-  email: String | null;
-  code: String;
+interface verifyEmailPayload {
+  email: string | null;
+  code: string;
 }
 
-const verifyEmailAPI = async(data: VerifyEmailPayload)=>{
+const verifyEmailAPI = async(data: verifyEmailPayload)=>{
   const res = await api.post("/auth/verify-email",data);
   return res.data;
 }
@@ -42,5 +42,5 @@ export {
 export type {
   SignupPayload,
   LoginPayload,
-  VerifyEmailPayload
+  verifyEmailPayload
 };
