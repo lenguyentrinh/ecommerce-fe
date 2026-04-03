@@ -20,7 +20,7 @@ export default function OtpForm() {
         type="text"
         register={register}
         name="otp"
-        placehoder="Please enter otp"
+        placeholder="Please enter otp"
         required="Please enter otp"
         error={errors.otp?.message}
       />

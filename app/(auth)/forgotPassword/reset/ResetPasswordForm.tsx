@@ -23,7 +23,7 @@ export default function ResetPasswordForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <TextInput
         type="password"
-        placehoder="Please enter your password"
+        placeholder="Please enter your password"
         register={register}
         error={errors.password?.message}
         required="Password is required"
@@ -40,7 +40,7 @@ export default function ResetPasswordForm() {
       />
       <TextInput
         type="password"
-        placehoder="Please enter your comfirmPassword"
+        placeholder="Please enter your comfirmPassword"
         register={register}
         error={errors.confirmPassword?.message}
         required="ConfirmPassword is required"

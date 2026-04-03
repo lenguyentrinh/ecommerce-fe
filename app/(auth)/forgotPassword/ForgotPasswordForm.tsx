@@ -20,7 +20,7 @@ export default function ForgotPasswordForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <TextInput
         type="email"
-        placehoder="Please enter your email"
+        placeholder="Please enter your email"
         register={register}
         error={errors.email?.message}
         required="Email is required"
