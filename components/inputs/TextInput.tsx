@@ -3,7 +3,7 @@ import { Path, UseFormRegister, FieldValues } from "react-hook-form";
 
 type textInputProps<TFormValues extends FieldValues> = {
   label?: string;
-  placehoder?: string;
+  placeholder?: string;
   type?: string;
   name: Path<TFormValues>;
   register: UseFormRegister<TFormValues>;
@@ -13,7 +13,7 @@ type textInputProps<TFormValues extends FieldValues> = {
 };
 export default function TextInput<TFormValues extends FieldValues>({
   label,
-  placehoder,
+  placeholder,
   type = "text",
   name,
   register,
@@ -31,7 +31,7 @@ export default function TextInput<TFormValues extends FieldValues>({
       <input
         className="w-full rounded-lg p-2 border border-gray-300 shadow-md focus:outline-none"
         type={type}
-        placeholder={placehoder}
+        placeholder={placeholder}
         {...register(name, { required , validate})}
       />
       {error && <p className="text-red-500 text-sm">{error}</p>}

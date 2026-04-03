@@ -48,7 +48,7 @@ export default function SignupForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <TextInput
-          placehoder="userName..."
+          placeholder="userName..."
           type="text"
           name="userName"
           register={register}
@@ -65,7 +65,7 @@ export default function SignupForm() {
           }}
         />
         <TextInput
-          placehoder="Birth Date..."
+          placeholder="Birth Date..."
           type="date"
           name="birthDate"
           register={register}
@@ -74,7 +74,7 @@ export default function SignupForm() {
         />
       </div>
       <TextInput
-        placehoder="PhoneNumber..."
+        placeholder="PhoneNumber..."
         type="tel"
         name="phoneNumber"
         register={register}
@@ -95,7 +95,7 @@ export default function SignupForm() {
         }}
       />
       <TextInput
-        placehoder="Email..."
+        placeholder="Email..."
         type="email"
         name="email"
         register={register}
@@ -111,7 +111,7 @@ export default function SignupForm() {
       />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <TextInput
-          placehoder="Password..."
+          placeholder="Password..."
           type="password"
           name="password"
           register={register}
@@ -128,7 +128,7 @@ export default function SignupForm() {
           }}
         />
         <TextInput
-          placehoder="Confirm Password..."
+          placeholder="Confirm Password..."
           type="password"
           name="confirmPassword"
           register={register}

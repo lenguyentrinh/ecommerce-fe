@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { signupAPI, SignupPayload, loginAPI, LoginPayload, VerifyEmailPayload, verifyEmailAPI } from "@/services/authAPI";
+import { signupAPI, SignupPayload, loginAPI, LoginPayload, verifyEmailPayload, verifyEmailAPI } from "@/services/authAPI";
 
 export const signupThunk = createAsyncThunk(
   "auth/signup",
@@ -25,7 +25,7 @@ export const  loginThunk = createAsyncThunk(
 
 export const verifyEmailThunk =createAsyncThunk(
   "auth/verify-email",
-  async(data: VerifyEmailPayload,{rejectWithValue})=>{
+  async(data: verifyEmailPayload,{rejectWithValue})=>{
     try {
       return await verifyEmailAPI(data);
     } catch (err: any) {

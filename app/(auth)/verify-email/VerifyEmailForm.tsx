@@ -2,12 +2,11 @@
 
 import { useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
-import { on } from "events";
 import TextInput from "@/components/inputs/TextInput";
 import { showToast } from "@/lib/toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import { verifyEmailThunk } from "@/store/authThunk";
-import { AppDispatch } from "@/store/store";
+import { AppDispatch, RootState } from "@/store/store";
 
 interface FormData {
     code: string;
@@ -19,11 +18,12 @@ export default function VerifyEmailForm() {
     const email = useSearchParams().get("email");
     const {register, handleSubmit, formState:{errors}} = useForm<FormData>({mode: "onTouched"});
     const router = useRouter();
+    const {verifyEmailLoading} = useSelector((state: RootState) => state.auth);
 
     const onSubmit = async(data: FormData)=>{
       data = {...data, email: email};
       try{
-        const result = await dispatch(verifyEmailThunk(data));
+        await dispatch(verifyEmailThunk(data)).unwrap();
         showToast.info("Verify email is sucessfull! Please enter usename and password to login!");
         router.push("/login")
       }catch(err){
@@ -36,7 +36,7 @@ export default function VerifyEmailForm() {
       <div className="">
       <p className="text-center text-sm text-red-500 mb-3">Please check your email <span className="font-bold">{email}</span> for the verification code.</p>
       <TextInput
-        placehoder="Code..."
+        placeholder="Code..."
         type="text"
         name="code"
         register={register}
@@ -45,9 +45,10 @@ export default function VerifyEmailForm() {
       />
       </div>
       <div className="flex justify-between">
-      <button type="submit" className="w-50 mr-2 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Verify</button>
-      <button type="button" className="w-50 ml-2 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={()=>router.push("/login")}>Cancel</button>
-        
+        <button type="submit" disabled={verifyEmailLoading} className="w-50 mr-2 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+          {verifyEmailLoading ? "Loading..." : "Verify"}
+        </button>
+        <button type="button" className="w-50 ml-2 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={()=>router.push("/login")}>Cancel</button>
       </div>
     </form>
       
