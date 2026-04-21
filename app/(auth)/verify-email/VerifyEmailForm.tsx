@@ -45,7 +45,11 @@ export default function VerifyEmailForm() {
       />
       </div>
       <div className="flex justify-between">
-        <button type="submit" disabled={verifyEmailLoading} className="w-50 mr-2 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        <button
+          type="submit"
+          disabled={verifyEmailLoading}
+          className="w-50 mr-2 bg-green-600 hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded"
+        >
           {verifyEmailLoading ? "Loading..." : "Verify"}
         </button>
         <button type="button" className="w-50 ml-2 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={()=>router.push("/login")}>Cancel</button>

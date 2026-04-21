@@ -138,7 +138,11 @@ export default function SignupForm() {
         />
       </div>
 
-      <button className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">
+      <button
+        type="submit"
+        disabled={signupLoading}
+        className="w-full bg-green-600 hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded mt-4"
+      >
         {signupLoading ? "Loading..." : "Sign Up"}
       </button>
     </form>
