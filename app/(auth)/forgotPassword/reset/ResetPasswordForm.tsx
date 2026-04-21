@@ -48,6 +48,7 @@ export default function ResetPasswordForm() {
       <TextInput
         type="password"
         placeholder="Please enter your password"
+        placeholder="Please enter your password"
         register={register}
         error={errors.newPassword?.message}
         required="Password is required"

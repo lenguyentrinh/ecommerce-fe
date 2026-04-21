@@ -22,9 +22,9 @@ interface AuthState {
 const initialState: AuthState = {
   signupLoading: false,
   loginLoading: false,
+  verifyEmailLoading: false,
   user: null,
   isAuthenticated: false,
-  verifyEmailLoading: false,
   token: null,
   sendOtpLoading: false,
   verifyOtpLoading: false,
@@ -80,10 +80,10 @@ const authSlice = createSlice({
       })
       .addCase(loginThunk.rejected, (state) => {
         state.loginLoading = false;
-      });
+      })
 
       // VERIFY EMAIL
-      builder.addCase(verifyEmailThunk.pending, (state) => {
+      .addCase(verifyEmailThunk.pending, (state) => {
         state.verifyEmailLoading = true;
       })
       .addCase(verifyEmailThunk.fulfilled, (state) => {
