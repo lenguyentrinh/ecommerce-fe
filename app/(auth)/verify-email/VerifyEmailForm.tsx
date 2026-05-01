@@ -46,11 +46,11 @@ export default function VerifyEmailForm() {
           error={errors.code?.message}
         />
       </div>
-      <div className="flex flex-col gap-2 sm:flex-row">
+      <div className="flex justify-between">
         <button
           type="submit"
           disabled={verifyEmailLoading}
-          className="w-full sm:w-1/2 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-50 mr-2 bg-green-600 hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded"
         >
           {verifyEmailLoading ? "Loading..." : "Verify"}
         </button>
