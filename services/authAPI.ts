@@ -18,9 +18,24 @@ interface LoginPayload {
   password: string;
 }
 
+interface LoginResponse {
+  message: string;
+}
+
+interface MeResponse {
+  id: number;
+  email: string;
+  userName: string;
+  role: string;
+}
+
+interface LogoutResponse {
+  message: string;
+}
+
 const loginAPI = async(data:LoginPayload)=>{
   const res = await api.post("/auth/login", data);
-  return res.data;
+  return res.data as LoginResponse;
 }
 
 interface verifyEmailPayload {
@@ -33,14 +48,27 @@ const verifyEmailAPI = async(data: verifyEmailPayload)=>{
   return res.data;
 }
 
+const meAPI = async () => {
+  const res = await api.get("/auth/me");
+  return res.data as MeResponse;
+};
+
+const logoutAPI = async () => {
+  const res = await api.post("/auth/logout");
+  return res.data as LogoutResponse;
+};
+
 export {
   signupAPI,
   loginAPI,
   verifyEmailAPI,
+  meAPI,
+  logoutAPI,
 };
 
 export type {
   SignupPayload,
   LoginPayload,
-  verifyEmailPayload
+  verifyEmailPayload,
+  MeResponse
 };

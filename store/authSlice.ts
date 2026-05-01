@@ -1,28 +1,29 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { signupThunk, loginThunk, verifyEmailThunk } from "./authThunk";
+import { signupThunk, loginThunk, verifyEmailThunk, fetchMeThunk, logoutThunk } from "./authThunk";
 
 interface User{
-  id?: number;
-  userName?: string;
-  email?: string;
+  id: number;
+  email: string;
+  userName: string;
+  role: string;
 }
 
 interface AuthState {
   signupLoading: boolean;
   loginLoading: boolean;
   verifyEmailLoading: boolean;
+  meLoading: boolean;
   user: User | null;
   isAuthenticated: boolean;
-  token: string | null;
 }
 
 const initialState: AuthState = {
   signupLoading: false,
   loginLoading: false,
   verifyEmailLoading: false,
+  meLoading: false,
   user: null,
   isAuthenticated: false,
-  token: null,
 };
 
 const authSlice = createSlice({
@@ -32,18 +33,10 @@ const authSlice = createSlice({
     logout: (state)=>{
       state.isAuthenticated = false;
       state.user = null;
-      state.token = null;
-      if(typeof window !== "undefined"){
-        localStorage.removeItem("token");
-      }
     },
-    setAuth:(state, action: PayloadAction<{user: User, token: string}>) =>{
+    setAuth:(state, action: PayloadAction<{user: User}>) =>{
       state.isAuthenticated = true;
       state.user = action.payload.user;
-      state.token = action.payload.token;
-      if(typeof window !== "undefined"){
-        localStorage.setItem("token", action.payload.token);
-      }
     }
   },
   extraReducers: (builder) => {
@@ -67,13 +60,11 @@ const authSlice = createSlice({
         state.loginLoading = false;
         state.isAuthenticated = true;
         state.user = action.payload.user;
-        state.token = action.payload.token;
-        if(typeof window !== "undefined"){
-          localStorage.setItem("token", action.payload.token);
-        }
       })
       .addCase(loginThunk.rejected, (state) => {
         state.loginLoading = false;
+        state.isAuthenticated = false;
+        state.user = null;
       })
 
       // VERIFY EMAIL
@@ -85,6 +76,31 @@ const authSlice = createSlice({
       })
       .addCase(verifyEmailThunk.rejected, (state) => {
         state.verifyEmailLoading = false;
+      })
+
+      // FETCH CURRENT USER (/auth/me)
+      .addCase(fetchMeThunk.pending, (state) => {
+        state.meLoading = true;
+      })
+      .addCase(fetchMeThunk.fulfilled, (state, action) => {
+        state.meLoading = false;
+        state.isAuthenticated = true;
+        state.user = action.payload;
+      })
+      .addCase(fetchMeThunk.rejected, (state) => {
+        state.meLoading = false;
+        state.isAuthenticated = false;
+        state.user = null;
+      })
+
+      // LOGOUT
+      .addCase(logoutThunk.fulfilled, (state) => {
+        state.isAuthenticated = false;
+        state.user = null;
+      })
+      .addCase(logoutThunk.rejected, (state) => {
+        state.isAuthenticated = false;
+        state.user = null;
       });
   },
 });

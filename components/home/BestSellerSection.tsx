@@ -53,11 +53,8 @@ export default function BestSellerSection() {
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
-  const flyIconRef = useRef<HTMLDivElement>(null);
-  const heartGlyphRef = useRef<HTMLSpanElement>(null);
 
   const frameRef = useRef<number | null>(null);
-  const flyDelayRef = useRef<number | null>(null);
   const lastTsRef = useRef<number>(0);
   const offsetRef = useRef<number>(0);
   const setWidthRef = useRef<number>(0);
@@ -166,35 +163,6 @@ export default function BestSellerSection() {
     updateFocusStyles();
   };
 
-  const animateFlyIconToCard = (cardElement: HTMLElement) => {
-    if (!flyIconRef.current || !heartGlyphRef.current) return;
-    if (flyDelayRef.current) window.clearTimeout(flyDelayRef.current);
-    heartGlyphRef.current.classList.remove("is-beating");
-
-    const cardRect = cardElement.getBoundingClientRect();
-    const centerX = cardRect.left + cardRect.width / 2;
-    const centerY = cardRect.top + cardRect.height / 2;
-    const delay = 140;
-    const duration = 520;
-
-    flyDelayRef.current = window.setTimeout(() => {
-      flyIconRef.current!.style.opacity = "1";
-      flyIconRef.current!.style.transform = `translate3d(${centerX}px, ${centerY}px, 0) translate(-50%, -50%) rotate(0deg) scale(1.02)`;
-
-      window.setTimeout(() => {
-        heartGlyphRef.current?.classList.add("is-beating");
-      }, duration);
-    }, delay);
-  };
-
-  const hideFlyIcon = () => {
-    if (!flyIconRef.current || !heartGlyphRef.current) return;
-    if (flyDelayRef.current) window.clearTimeout(flyDelayRef.current);
-    heartGlyphRef.current.classList.remove("is-beating");
-    flyIconRef.current.style.opacity = "0";
-    flyIconRef.current.style.transform = "translate3d(-64px,-64px,0) translate(-50%, -50%) rotate(-16deg) scale(0.84)";
-  };
-
   useEffect(() => {
     reduceMotionRef.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     recalcLayout();
@@ -202,12 +170,6 @@ export default function BestSellerSection() {
     const onResize = () => recalcLayout();
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (flyDelayRef.current) window.clearTimeout(flyDelayRef.current);
-    };
   }, []);
 
   useEffect(() => {
@@ -280,12 +242,6 @@ export default function BestSellerSection() {
         }}
       >
         <div ref={backgroundRef} className="premium-slider-bg absolute inset-0 -z-10" />
-        <div ref={flyIconRef} className="fly-icon pointer-events-none fixed left-0 top-0 z-[90]">
-          <span ref={heartGlyphRef} className="heart-glyph text-lg">
-            ❤
-          </span>
-        </div>
-
         <button
           type="button"
           aria-label="Scroll products left"
@@ -346,8 +302,6 @@ export default function BestSellerSection() {
               >
                 <div
                   className="group/card relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 shadow-[0_6px_24px_rgba(15,23,42,0.08)] backdrop-blur-sm transition-all duration-400 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_22px_48px_rgba(15,23,42,0.18)]"
-                  onMouseEnter={(event) => animateFlyIconToCard(event.currentTarget)}
-                  onMouseLeave={hideFlyIcon}
                 >
                   <div className="relative h-52 w-full overflow-hidden rounded-t-3xl">
                     <Image
@@ -453,40 +407,6 @@ export default function BestSellerSection() {
           }
         }
 
-        .fly-icon {
-          opacity: 0;
-          color: #e11d48;
-          transform: translate3d(-64px, -64px, 0) translate(-50%, -50%) rotate(-16deg) scale(0.84);
-          transition:
-            transform 0.52s cubic-bezier(0.22, 1, 0.36, 1),
-            opacity 0.4s ease-in-out;
-          will-change: transform, opacity;
-        }
-
-        .heart-glyph {
-          display: inline-block;
-          transform-origin: center;
-        }
-
-        .heart-glyph.is-beating {
-          animation: heartBeat 1.35s ease-in-out infinite;
-          text-shadow: 0 0 10px rgba(225, 29, 72, 0.45), 0 0 18px rgba(225, 29, 72, 0.2);
-        }
-
-        @keyframes heartBeat {
-          0%,
-          14%,
-          32%,
-          100% {
-            transform: scale(1);
-          }
-          8% {
-            transform: scale(1.25);
-          }
-          22% {
-            transform: scale(1.15);
-          }
-        }
       `}</style>
     </section>
   );
