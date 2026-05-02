@@ -1,4 +1,4 @@
-import ForgotPasswordForm from "./ForgotPasswordForm";
+import ForgotPasswordByEmailForm from "./ForgotPasswordByEmailForm";
 
 export default function ForgotPasswordPage() {
   return (
@@ -7,7 +7,7 @@ export default function ForgotPasswordPage() {
         <h1 className="font-semibold text-center mb-3">
           Enter your email address to receive a verification code
         </h1>
-        <ForgotPasswordForm />
+        <ForgotPasswordByEmailForm />
       </div>
     </div>
   );

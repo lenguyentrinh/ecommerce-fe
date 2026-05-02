@@ -58,17 +58,53 @@ const logoutAPI = async () => {
   return res.data as LogoutResponse;
 };
 
+interface sendOtpPayload {
+  email: string;
+}
+
+const sendOtpAPI = async(data: sendOtpPayload)=>{
+  const res = await api.post("/auth/send-otp",data);  
+  return res.data;
+}
+
+interface verifyOtpPayload {
+  email: string;
+  otp: string;
+}
+
+const verifyOtpAPI = async(data: verifyOtpPayload)=>{
+  const res = await api.post("/auth/verify-otp",data);
+  return res.data;
+}
+
+interface resetPasswordPayload {
+  email: string;
+  newPassword: string;
+  confirmNewPassword: string | null;
+}
+    
+const resetPasswordAPI = async(data: resetPasswordPayload)=>{
+  const res = await api.post("/auth/reset-password",data);
+  return res.data;
+}
+
 export {
   signupAPI,
   loginAPI,
   verifyEmailAPI,
   meAPI,
   logoutAPI,
+  sendOtpAPI,
+  verifyOtpAPI,
+  resetPasswordAPI
 };
 
 export type {
   SignupPayload,
   LoginPayload,
   verifyEmailPayload,
-  MeResponse
+  MeResponse,
+  sendOtpPayload,
+  verifyOtpPayload,
+  resetPasswordPayload
 };
