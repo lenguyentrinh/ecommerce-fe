@@ -1,19 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { signupThunk, loginThunk, verifyEmailThunk, sendOtpThunk ,verifyOtpThunk,resetPasswordThunk} from "./authThunk";
+import { signupThunk, loginThunk, verifyEmailThunk, fetchMeThunk, logoutThunk, sendOtpThunk ,verifyOtpThunk,resetPasswordThunk} from "./authThunk";
 
 interface User{
-  id?: number;
-  userName?: string;
-  email?: string;
+  id: number;
+  email: string;
+  userName: string;
+  role: string;
 }
 
 interface AuthState {
   signupLoading: boolean;
   loginLoading: boolean;
   verifyEmailLoading: boolean;
+  meLoading: boolean;
   user: User | null;
   isAuthenticated: boolean;
-  token: string | null;
   sendOtpLoading: boolean;
   verifyOtpLoading: boolean;
   resetPasswordLoading: boolean;
@@ -23,9 +24,9 @@ const initialState: AuthState = {
   signupLoading: false,
   loginLoading: false,
   verifyEmailLoading: false,
+  meLoading: false,
   user: null,
   isAuthenticated: false,
-  token: null,
   sendOtpLoading: false,
   verifyOtpLoading: false,
   resetPasswordLoading: false,
@@ -38,18 +39,10 @@ const authSlice = createSlice({
     logout: (state)=>{
       state.isAuthenticated = false;
       state.user = null;
-      state.token = null;
-      if(typeof window !== "undefined"){
-        localStorage.removeItem("token");
-      }
     },
-    setAuth:(state, action: PayloadAction<{user: User, token: string}>) =>{
+    setAuth:(state, action: PayloadAction<{user: User}>) =>{
       state.isAuthenticated = true;
       state.user = action.payload.user;
-      state.token = action.payload.token;
-      if(typeof window !== "undefined"){
-        localStorage.setItem("token", action.payload.token);
-      }
     }
   },
   extraReducers: (builder) => {
@@ -73,13 +66,11 @@ const authSlice = createSlice({
         state.loginLoading = false;
         state.isAuthenticated = true;
         state.user = action.payload.user;
-        state.token = action.payload.token;
-        if(typeof window !== "undefined"){
-          localStorage.setItem("token", action.payload.token);
-        }
       })
       .addCase(loginThunk.rejected, (state) => {
         state.loginLoading = false;
+        state.isAuthenticated = false;
+        state.user = null;
       })
 
       // VERIFY EMAIL
@@ -91,39 +82,6 @@ const authSlice = createSlice({
       })
       .addCase(verifyEmailThunk.rejected, (state) => {
         state.verifyEmailLoading = false;
-      })
-
-      // SEND OTP
-      .addCase(sendOtpThunk.pending, (state) => {
-        state.sendOtpLoading = true;
-      })
-      .addCase(sendOtpThunk.fulfilled, (state) => {
-        state.sendOtpLoading = false;
-      })
-      .addCase(sendOtpThunk.rejected, (state) => {
-        state.sendOtpLoading = false;
-      })
-
-      // VERIFY OTP
-      .addCase(verifyOtpThunk.pending, (state) => {
-        state.verifyOtpLoading = true;
-      })
-      .addCase(verifyOtpThunk.fulfilled, (state) => {
-        state.verifyOtpLoading = false;
-      })
-      .addCase(verifyOtpThunk.rejected, (state) => {
-        state.verifyOtpLoading = false;
-      })
-      
-      // RESET PASSWORD
-      .addCase(resetPasswordThunk.pending, (state) => {
-        state.resetPasswordLoading = true;
-      })
-      .addCase(resetPasswordThunk.fulfilled, (state) => {
-        state.resetPasswordLoading = false;
-      })
-      .addCase(resetPasswordThunk.rejected, (state) => {
-        state.resetPasswordLoading = false;
       });
   },
 });

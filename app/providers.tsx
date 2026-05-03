@@ -1,8 +1,18 @@
 "use client";
 
 import { Provider } from "react-redux";
+import { useEffect } from "react";
 import { store } from "@/store/store";
 import { Toaster } from "react-hot-toast";
+import { fetchMeThunk } from "@/store/authThunk";
+
+function AuthBootstrap() {
+  useEffect(() => {
+    store.dispatch(fetchMeThunk());
+  }, []);
+
+  return null;
+}
 
 export default function Providers({
   children,
@@ -11,6 +21,7 @@ export default function Providers({
 }) {
   return (
     <Provider store={store}>
+      <AuthBootstrap />
       {children}
       <Toaster 
         position="bottom-left"
